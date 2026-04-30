@@ -35,14 +35,14 @@ describe('Plugin Integration (dry-run)', () => {
   // `cds.test()` hooks into Jest lifecycle (beforeAll/afterAll) automatically.
   const { GET } = (cds as any).test(APP_DIR);
 
-  it('GET /test/Items returns 200 with an empty array by default', async () => {
-    const res = await GET('/test/Items');
+  it('GET /odata/v4/test/Items returns 200 with an empty array by default', async () => {
+    const res = await GET('/odata/v4/test/Items');
     expect(res.status).toBe(200);
     expect(Array.isArray(res.data.value)).toBe(true);
   });
 
   it('plugin does not break standard OData metadata endpoint', async () => {
-    const res = await GET('/test/$metadata');
+    const res = await GET('/odata/v4/test/$metadata');
     expect(res.status).toBe(200);
     expect(res.data).toContain('EntityType');
   });
