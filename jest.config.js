@@ -8,4 +8,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'json'],
   // Increase timeout for integration tests that start a real CDS server
   testTimeout: 30000,
+  transform: {
+    '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }],
+  },
 };

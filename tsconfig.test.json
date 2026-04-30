@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    // @sap/cds does not ship declaration files resolvable via the classic
+    // Node module resolver. Relaxing noImplicitAny for tests only lets us
+    // import it without a stub .d.ts file while keeping strict mode for src/.
+    "noImplicitAny": false
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test/app"]
+}
