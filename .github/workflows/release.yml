@@ -1,0 +1,49 @@
+name: Release
+
+# Triggered only after the CI workflow completes successfully on main.
+# This avoids re-running lint/tests that CI already ran, saving free-tier minutes.
+on:
+  workflow_run:
+    workflows: ['CI']
+    branches: [main]
+    types: [completed]
+
+jobs:
+  release:
+    name: Semantic Release & Publish to npm
+    # Only run when CI passed — skip if it failed or was cancelled.
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write # Required for npm provenance (optional but recommended)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use a PAT if you need semantic-release to push tags that re-trigger
+          # other workflows; GITHUB_TOKEN works for basic tag/release creation.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+
+      # Build must run before publish so dist/ exists in the published package.
+      - run: npm run build
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NPM_TOKEN must be set as a repository secret.
+          # Create a token at https://www.npmjs.com/settings/<user>/tokens
+          # (type: Automation) and add it as NPM_TOKEN in Settings → Secrets.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
