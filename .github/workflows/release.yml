@@ -8,6 +8,17 @@ on:
     branches: [main]
     types: [completed]
 
+# ─── TO ENABLE NPM PUBLISHING ────────────────────────────────────────────────
+# This template has "private": true in package.json to prevent accidental
+# publishing of the template itself. Before using this workflow to publish your
+# derived plugin:
+#
+#   1. Remove "private": true from package.json
+#   2. Set your plugin's name, version, and description
+#   3. Create an npm Automation token at https://www.npmjs.com/settings/<user>/tokens
+#   4. Add it as NPM_TOKEN in your repo: Settings → Secrets → Actions
+# ─────────────────────────────────────────────────────────────────────────────
+
 jobs:
   release:
     name: Semantic Release & Publish to npm

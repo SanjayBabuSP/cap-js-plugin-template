@@ -172,14 +172,34 @@ Users of your plugin configure it via `cds.env` (package.json or .cdsrc.json):
 | `npm run lint`        | Run ESLint                    |
 | `npm run format`      | Format with Prettier          |
 
-## Publishing
+## Publishing Your Plugin to npm
 
-1. Update `name`, `description`, `repository`, and `keywords` in `package.json`
-2. Build: `npm run build`
-3. Test: `npm test`
-4. Publish: `npm publish`
+This template is marked `"private": true` in `package.json` so that the template itself is never accidentally published to npm. The automated release workflow (`release.yml`) will also skip the npm publish step while this flag is set.
 
-The `prepublishOnly` script ensures the TypeScript is compiled before publishing.
+When you are ready to publish **your own plugin** derived from this template:
+
+### Manual publish
+
+1. Set your plugin's `name`, `version`, `description`, `author`, and `repository` in `package.json`
+2. Remove the `"private": true` line from `package.json`
+3. Build and publish:
+
+```bash
+npm run build
+npm publish
+```
+
+The `prepublishOnly` script ensures TypeScript is compiled before every publish.
+
+### Automated publish via GitHub Actions
+
+The included `release.yml` workflow uses [semantic-release](https://semantic-release.gitbook.io/) to publish on every merge to `main`:
+
+1. Complete the manual steps above (remove `"private"`, set package metadata)
+2. Create an npm **Automation token** at <https://www.npmjs.com/settings/\<user\>/tokens>
+3. Add it as the `NPM_TOKEN` secret in your repo: **Settings → Secrets and variables → Actions**
+
+After that, every merge to `main` that follows [Conventional Commits](https://www.conventionalcommits.org/) will automatically version, tag, and publish the package.
 
 ## Contributing
 

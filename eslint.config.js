@@ -30,5 +30,22 @@ export default tseslint.config(
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-console': 'warn',
     },
+  },
+  // CommonJS files (cds-plugin.js is the CAP entrypoint, jest.config.js uses module.exports)
+  {
+    files: ['cds-plugin.js', 'jest.config.js'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        require: 'readonly',
+        module: 'writable',
+        exports: 'writable',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
   }
 );

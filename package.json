@@ -2,6 +2,7 @@
   "name": "cap-js-plugin-template",
   "version": "1.0.0",
   "description": "Template for building SAP CAP CDS plugins with TypeScript",
+  "private": true,
   "main": "cds-plugin.js",
   "types": "dist/main.d.ts",
   "scripts": {

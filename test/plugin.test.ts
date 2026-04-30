@@ -1,4 +1,4 @@
-import { getConfig, DEFAULTS, PluginConfig } from '../src/config';
+import { getConfig, DEFAULTS, type PluginConfig } from '../src/config';
 import { applyPlugin } from '../src/index';
 
 // ─── Unit Tests: config ──────────────────────────────────────────
@@ -28,27 +28,23 @@ describe('getConfig', () => {
 // ─── Unit Tests: applyPlugin ─────────────────────────────────────
 
 describe('applyPlugin', () => {
-  function createMockCds(pluginConfig: Partial<PluginConfig> = {}) {
-    return {
-      env: { myPlugin: pluginConfig },
-      log: () => ({
-        info: jest.fn(),
-        warn: jest.fn(),
-        error: jest.fn(),
-        debug: jest.fn(),
-      }),
-    };
-  }
+  const createMockCds = (pluginConfig: Partial<PluginConfig> = {}) => ({
+    env: { myPlugin: pluginConfig },
+    log: () => ({
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+      debug: jest.fn(),
+    }),
+  });
 
-  function createMockService(name = 'TestService') {
-    return {
-      name,
-      send: jest.fn().mockResolvedValue({ id: 1 }),
-      before: jest.fn(),
-      on: jest.fn(),
-      after: jest.fn(),
-    };
-  }
+  const createMockService = (name = 'TestService') => ({
+    name,
+    send: jest.fn().mockResolvedValue({ id: 1 }),
+    before: jest.fn(),
+    on: jest.fn(),
+    after: jest.fn(),
+  });
 
   it('activates plugin when enabled', () => {
     const cds = createMockCds({ enabled: true });
