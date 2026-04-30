@@ -9,7 +9,10 @@
     "requires": {
       "db": {
         "kind": "sqlite",
-        "impl": "@cap-js/sqlite"
+        "impl": "@cap-js/sqlite",
+        "credentials": {
+          "url": ":memory:"
+        }
       }
     }
   }
